@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Spring Nixer Plugin Demo App</title>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="#">nixer.io</a>
+</nav>
+
+<main role="main" class="container">
+
+    <div class="starter-template">
+        <h1>Nixer Demo</h1>
+        <h2>
+            <span th:text="Hello">
+            </span>
+            <div sec:authentication="name"/>
+        </h2>
+
+        <a href="/logout">Logout</a>
+    </div>
+
+</main>
+
+</body>
+</html>
