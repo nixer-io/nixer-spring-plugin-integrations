@@ -2,31 +2,32 @@
 <head>
     <title>Please Login</title>
 
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-    <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <link th:href="@{/static/css/login.css}" rel="stylesheet" crossorigin="anonymous" type="text/css"/>
 </head>
-<body>
+<body class="text-center">
 <div class="container">
-    <form name="form-signin" th:action="@{/login}" method="post">
-        <h2 class="form-signin-heading">Please Login</h2>
+    <form class="form-signin" th:action="@{/login}" method="post">
+        <img class="mb-4" th:src="@{/static/img/bootstrap-solid.svg}" alt="" width="72" height="72">
+        <h1 class="h3 mb-3 font-weight-normal">Please log in</h1>
         <div th:if="${param.error}" class="alert alert-danger" role="alert">
             <span>Invalid username and password.</span>
         </div>
         <div th:if="${param.logout}" class="alert alert-success">
             You have been logged out.
         </div>
-        <p>
-            <label class="sr-only" for="username">Username</label>
-            <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus/>
-        </p>
-        <p>
-            <label class="sr-only" for="password">Password</label>
-            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required/>
-        </p>
-
-        <button type="submit" class="btn btn-lg btn-primary btn-block">Log in</button>
+        <label for="inputUsername" class="sr-only">Username</label>
+        <input name="username" type="text" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
+        <p class="mt-5 mb-3 text-muted">&copy; 2019</p>
     </form>
+
 </div>
 </body>
 </html>
