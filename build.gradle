@@ -21,10 +21,14 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
-    implementation 'org.springframework.boot:spring-boot-devtools'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
     implementation 'io.micrometer:micrometer-registry-influx:latest.release'
+
+    implementation "io.nixer:nixer-plugin-core:0.1.0.0"
+    implementation "io.nixer:nixer-plugin-captcha:0.1.0.0"
+    implementation "io.nixer:nixer-plugin-pwned-check:0.1.0.0"
+
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
