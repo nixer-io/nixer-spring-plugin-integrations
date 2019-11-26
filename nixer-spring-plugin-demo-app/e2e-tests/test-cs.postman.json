@@ -14,7 +14,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "93cee2cd-b6b4-4381-a863-571836286e77",
+								"id": "a3c31e99-5588-44eb-ae87-345484a44dbf",
 								"exec": [
 									"responseHTML = cheerio(pm.response.text());",
 									"",
@@ -39,6 +39,17 @@
 									"});",
 									"",
 									"",
+									"pm.test(\"Not captcha in login form\", function () {",
+									"    var form = responseHTML.find('form.form-signin')",
+									"    var hasForm = form.length > 0",
+									"    pm.expect(hasForm).to.be.true",
+									"    ",
+									"    var captcha = form.find('div.g-recaptcha')",
+									"    pm.expect(captcha.length === 0).to.be.true",
+									"});",
+									"",
+									"",
+									"",
 									""
 								],
 								"type": "text/javascript"
@@ -47,7 +58,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "658c43f6-f867-4f33-8b5c-807c4caacb17",
+								"id": "e0c7cc0b-c2d8-4e72-8a92-e24a8c725cdd",
 								"exec": [
 									"const cookieJar = pm.cookies.jar();",
 									"var url = pm.environment.get(\"url.hostname\")",
@@ -99,17 +110,23 @@
 									"    pm.response.to.have.status(302);",
 									"});",
 									"",
-									"pm.test(\"Redirect location is correct\", function () {",
-									"    pm.response.to.have.header(\"Location\");",
-									"    var valid = pm.iterationData.get(\"data.valid\")",
-									"    ",
-									"    var url = pm.environment.get(\"url\");",
-									"    if (valid) {",
+									"var valid = pm.iterationData.get(\"data.valid\")",
+									"var url = pm.environment.get(\"url\");",
+									"",
+									"if (valid) {",
+									"    pm.test(\"Redirect location to home page\", function () {",
+									"        pm.response.to.have.header(\"Location\");",
+									"        ",
 									"        pm.response.to.be.header(\"Location\", url + \"/\");",
-									"    } else {",
+									"    });",
+									"} else {",
+									"    pm.test(\"Redirect location to error page\", function () {",
+									"        pm.response.to.have.header(\"Location\");",
+									"        ",
 									"        pm.response.to.be.header(\"Location\", url + \"/login?error\");",
-									"    }",
-									"});",
+									"    });    ",
+									"}",
+									"",
 									"",
 									""
 								],

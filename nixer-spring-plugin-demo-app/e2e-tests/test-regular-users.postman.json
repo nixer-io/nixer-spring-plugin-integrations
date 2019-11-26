@@ -1,12 +1,12 @@
 {
 	"info": {
 		"_postman_id": "5d78d47f-6e52-4357-ac67-3cd0c4cf61eb",
-		"name": "Nixer Plugin Demo CS",
+		"name": "Nixer Plugin Demo Regular",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "Regular User",
+			"name": "Login/Logout",
 			"item": [
 				{
 					"name": "Get Login Form",
@@ -626,7 +626,7 @@
 			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "CS Attempt unknown users",
+			"name": "User mistyped password",
 			"item": [
 				{
 					"name": "Get Login Form",
@@ -749,12 +749,12 @@
 							"urlencoded": [
 								{
 									"key": "username",
-									"value": "unknownUser1",
+									"value": "existingUser3",
 									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "unknownUser1",
+									"value": "bad-password",
 									"type": "text"
 								},
 								{
@@ -773,12 +773,12 @@
 								"login"
 							]
 						},
-						"description": "Should fail login for unknow user"
+						"description": "Should fail login for bad password"
 					},
 					"response": []
 				},
 				{
-					"name": "Login Failed #2",
+					"name": "Login Success #1",
 					"event": [
 						{
 							"listen": "test",
@@ -792,7 +792,7 @@
 									"pm.test(\"Redirect location is correct\", function () {",
 									"    pm.response.to.have.header(\"Location\");",
 									"    var url = pm.environment.get(\"url\");",
-									"    pm.response.to.be.header(\"Location\", url + \"/login?error\");",
+									"    pm.response.to.be.header(\"Location\", url + \"/\");",
 									"});",
 									"",
 									""
@@ -819,12 +819,12 @@
 							"urlencoded": [
 								{
 									"key": "username",
-									"value": "unknownUser2",
+									"value": "existingUser3",
 									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "unknownUser2",
+									"value": "HaMaUiG0UyCi1Yot",
 									"type": "text"
 								},
 								{
@@ -843,77 +843,7 @@
 								"login"
 							]
 						},
-						"description": "Should fail login for unknow user"
-					},
-					"response": []
-				},
-				{
-					"name": "Login Failed #3",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "93cee2cd-b6b4-4381-a863-571836286e77",
-								"exec": [
-									"pm.test(\"Status code is 302\", function () {",
-									"    pm.response.to.have.status(302);",
-									"});",
-									"",
-									"pm.test(\"Redirect location is correct\", function () {",
-									"    pm.response.to.have.header(\"Location\");",
-									"    var url = pm.environment.get(\"url\");",
-									"    pm.response.to.be.header(\"Location\", url + \"/login?error\");",
-									"});",
-									"",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"followRedirects": false
-					},
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"type": "text",
-								"value": "application/x-www-form-urlencoded"
-							}
-						],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "username",
-									"value": "unknownUser3",
-									"type": "text"
-								},
-								{
-									"key": "password",
-									"value": "unknownUser3",
-									"type": "text"
-								},
-								{
-									"key": "_csrf",
-									"value": "{{csrftoken}}",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{url}}/login",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"login"
-							]
-						},
-						"description": "Should fail login for unknow user"
+						"description": "Should fail login for bad password"
 					},
 					"response": []
 				}
