@@ -105,7 +105,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .then(CAPTCHA)
                 .buildRule()
                 .rule("userAgentLoginOverThreshold")
-                .when(Conditions::isIpLoginOverThreshold)
+                .when(Conditions::isUserAgentLoginOverThreshold)
                 .then(CAPTCHA)
                 .buildRule()
                 .rule("credentialStuffingActive")
