@@ -65,7 +65,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         users.put("existingUser18", "qMkDXC/Wiy1I2Mtn");
         users.put("existingUser19", "4bDCOniyko6SgCse");
         users.put("existingUser20", "C0wKe9kmM1IltT75");
-        users.put("leakedUser21", "C0wKe9kmM1IltT75");
 
         return users;
     }
