@@ -1,12 +1,12 @@
 {
 	"info": {
-		"_postman_id": "7c21c570-a19e-444a-8e6d-7d7f30283641",
-		"name": "Nixer Plugin Demo CS",
+		"_postman_id": "5989b8b0-607a-4cbf-b56e-30e4a11fbeba",
+		"name": "Nixer Plugin Demo Bruteforce",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "CS Attempt",
+			"name": "Bruteforce",
 			"item": [
 				{
 					"name": "Get Login Form",
@@ -16,6 +16,8 @@
 							"script": {
 								"id": "a3c31e99-5588-44eb-ae87-345484a44dbf",
 								"exec": [
+									"postman.setEnvironmentVariable(\"ip\", pm.variables.get(\"ip\"))",
+									"",
 									"responseHTML = cheerio(pm.response.text());",
 									"",
 									"var csrftoken = responseHTML.find('form.form-signin').find('input[name=\"_csrf\"]').val()",
@@ -60,13 +62,16 @@
 							"script": {
 								"id": "e0c7cc0b-c2d8-4e72-8a92-e24a8c725cdd",
 								"exec": [
-									"const cookieJar = pm.cookies.jar();",
+									"var cookieJar = pm.cookies.jar();",
+									"",
 									"var url = pm.environment.get(\"url.hostname\")",
+									"console.log(\"Url for cookies\", url)",
 									"cookieJar.clear(url, function(error) {",
+									"    console.log(\"Unable to clean cookies\", error)",
 									"  ",
 									"});",
-									"pm.environment.unset(\"crsftoken\");",
-									""
+									"",
+									"pm.environment.unset(\"crsftoken\");"
 								],
 								"type": "text/javascript"
 							}
@@ -83,6 +88,11 @@
 								"name": "Content-Type",
 								"type": "text",
 								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "X-Forwarded-For",
+								"value": "{{data.ip}}",
+								"type": "text"
 							}
 						],
 						"url": {
@@ -145,7 +155,8 @@
 									"pm.request.headers.add({",
 									"    key: \"User-Agent\",",
 									"    value: userAgent",
-									"})"
+									"})",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -162,6 +173,11 @@
 								"name": "Content-Type",
 								"type": "text",
 								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "X-Forwarded-For",
+								"value": "{{data.ip}}",
+								"type": "text"
 							}
 						],
 						"body": {

@@ -95,11 +95,6 @@
     "data.valid": true
   },
   {
-    "data.username": "existingUser20",
-    "data.password": "C0wKe9kmM1IltT75",
-    "data.valid": true
-  },
-  {
     "data.username": "nonExistingUser21",
     "data.password": "WDS73orZ5MlnNGcz",
     "data.valid": false

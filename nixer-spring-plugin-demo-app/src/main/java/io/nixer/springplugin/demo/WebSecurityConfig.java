@@ -57,6 +57,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         configurer.withObjectPostProcessor(new CaptchaConfigurer(captchaChecker));
     }
 
+    @Bean
+    public RequestContextFilter requestContextFilter() {
+        return new OrderedRequestContextFilter();
+    }
+
 
     private Map<String, String> users() {
         final Map<String, String> users = new HashMap<>();
@@ -80,14 +85,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         users.put("existingUser18", "qMkDXC/Wiy1I2Mtn");
         users.put("existingUser19", "4bDCOniyko6SgCse");
         users.put("existingUser20", "C0wKe9kmM1IltT75");
-        users.put("leakedUser21", "C0wKe9kmM1IltT75");
 
         return users;
-    }
-
-    @Bean
-    public RequestContextFilter requestContextFilter() {
-        return new OrderedRequestContextFilter();
     }
 
     /**
