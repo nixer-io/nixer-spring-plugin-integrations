@@ -1,0 +1,269 @@
+{
+	"info": {
+		"_postman_id": "5989b8b0-607a-4cbf-b56e-30e4a11fbeba",
+		"name": "Nixer Plugin Demo Bruteforce",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Bruteforce",
+			"item": [
+				{
+					"name": "Get Login Form",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a3c31e99-5588-44eb-ae87-345484a44dbf",
+								"exec": [
+									"postman.setEnvironmentVariable(\"ip\", pm.variables.get(\"ip\"))",
+									"",
+									"responseHTML = cheerio(pm.response.text());",
+									"",
+									"var csrftoken = responseHTML.find('form.form-signin').find('input[name=\"_csrf\"]').val()",
+									"postman.setEnvironmentVariable('csrftoken', csrftoken);",
+									"",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Return login form\", function () {",
+									"    var form = responseHTML.find('form.form-signin')",
+									"    var hasForm = form.length > 0",
+									"    pm.expect(hasForm).to.be.true",
+									"    ",
+									"    var username = form.find('input[name=\"username\"]')",
+									"    pm.expect(username.length > 0).to.be.true",
+									"",
+									"    var password = form.find('input[name=\"password\"]')",
+									"    pm.expect(password.length > 0).to.be.true",
+									"});",
+									"",
+									"",
+									"pm.test(\"Not captcha in login form\", function () {",
+									"    var form = responseHTML.find('form.form-signin')",
+									"    var hasForm = form.length > 0",
+									"    pm.expect(hasForm).to.be.true",
+									"    ",
+									"    var captcha = form.find('div.g-recaptcha')",
+									"    pm.expect(captcha.length === 0).to.be.true",
+									"});",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "e0c7cc0b-c2d8-4e72-8a92-e24a8c725cdd",
+								"exec": [
+									"var cookieJar = pm.cookies.jar();",
+									"",
+									"var url = pm.environment.get(\"url.hostname\")",
+									"console.log(\"Url for cookies\", url)",
+									"cookieJar.clear(url, function(error) {",
+									"    console.log(\"Unable to clean cookies\", error)",
+									"  ",
+									"});",
+									"",
+									"pm.environment.unset(\"crsftoken\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"followRedirects": false
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "X-Forwarded-For",
+								"value": "{{data.ip}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"login"
+							]
+						},
+						"description": "Should return login form"
+					},
+					"response": []
+				},
+				{
+					"name": "Login #1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "93cee2cd-b6b4-4381-a863-571836286e77",
+								"exec": [
+									"pm.test(\"Status code is 302\", function () {",
+									"    pm.response.to.have.status(302);",
+									"});",
+									"",
+									"var valid = pm.iterationData.get(\"data.valid\")",
+									"var url = pm.environment.get(\"url\");",
+									"",
+									"if (valid) {",
+									"    pm.test(\"Redirect location to home page\", function () {",
+									"        pm.response.to.have.header(\"Location\");",
+									"        ",
+									"        pm.response.to.be.header(\"Location\", url + \"/\");",
+									"    });",
+									"} else {",
+									"    pm.test(\"Redirect location to error page\", function () {",
+									"        pm.response.to.have.header(\"Location\");",
+									"        ",
+									"        pm.response.to.be.header(\"Location\", url + \"/login?error\");",
+									"    });    ",
+									"}",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "39818146-5f73-43cf-892c-dea7465f62d2",
+								"exec": [
+									"// var userAgent = pm.variables.get(\"$randomUserAgent\")",
+									"var userAgent = pm.variables.replaceIn(\"{{$randomUserAgent}}\")",
+									"// console.log(\"UserAgent: \" + userAgent)",
+									"",
+									"pm.request.headers.add({",
+									"    key: \"User-Agent\",",
+									"    value: userAgent",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"followRedirects": false
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "X-Forwarded-For",
+								"value": "{{data.ip}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "{{data.username}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{data.password}}",
+									"type": "text"
+								},
+								{
+									"key": "_csrf",
+									"value": "{{csrftoken}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"login"
+							]
+						},
+						"description": "Should fail login for unknow user"
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "dbc10e09-58a1-449a-86d9-cf34354f839f",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "0a75dc8e-d3ca-492e-9ffe-8e0f19e353a2",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "12bc2c0f-ecd8-4cef-affa-b37bbabd4827",
+				"type": "text/javascript",
+				"exec": [
+					"var url = require('url')",
+					"",
+					"var hostname = url.parse(pm.environment.get('url')).hostname",
+					"pm.environment.set('url.hostname', hostname)",
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "9ba0c89d-a2c9-4556-b5ce-87abed62d755",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
