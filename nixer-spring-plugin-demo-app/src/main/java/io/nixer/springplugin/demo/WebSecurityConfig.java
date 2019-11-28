@@ -3,6 +3,8 @@ package io.nixer.springplugin.demo;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.boot.web.servlet.filter.OrderedRequestContextFilter;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -10,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.filter.RequestContextFilter;
 
 /**
  * Very basic in-memory single user IAM.
@@ -40,6 +43,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         var configurer = auth.inMemoryAuthentication().passwordEncoder(encoder);
 
         users().forEach((user, pass) -> configurer.withUser(user).password(encoder.encode(pass)).roles("USER"));
+    }
+
+    @Bean
+    public RequestContextFilter requestContextFilter() {
+        return new OrderedRequestContextFilter();
     }
 
 
