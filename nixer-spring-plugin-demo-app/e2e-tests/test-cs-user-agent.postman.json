@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "7c21c570-a19e-444a-8e6d-7d7f30283641",
-		"name": "Nixer Plugin Demo CS IP",
+		"_postman_id": "f7e27297-7442-4a60-8736-3bca8f6c29a8",
+		"name": "Nixer Plugin Demo CS UserAgent",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -135,14 +135,31 @@
 					"script": {
 						"id": "39818146-5f73-43cf-892c-dea7465f62d2",
 						"exec": [
-							"// var userAgent = pm.variables.get(\"$randomUserAgent\")",
-							"var userAgent = pm.variables.replaceIn(\"{{$randomUserAgent}}\")",
-							"// console.log(\"UserAgent: \" + userAgent)",
+							"function choice(elements) {",
+							"  return elements[_.random(0, elements.length)]",
+							"}",
+							"",
+							"const sentryUserAgents = [",
+							"    \"Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0; .NET CLR 1.1.4322; .NET CLR 2.0.50727; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729)\",",
+							"    \"Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; .NET CLR 1.1.4322; .NET CLR 2.0.50727; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729)\",",
+							"    \"Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.11) Gecko/2009060215 Firefox/3.0.11\",",
+							"    \"Mozilla/5.0 (Windows; U; Windows NT 5.1; en) AppleWebKit/522.11.3 (KHTML, like Gecko) Version/3.0 Safari/522.11.3\",",
+							"    \"Opera/9.80 (Windows NT 6.0; U; en) Presto/2.2.0 Version/10.00\"",
+							"]",
+							"",
+							"const userAgent = choice(sentryUserAgents)",
 							"",
 							"pm.request.headers.add({",
 							"    key: \"User-Agent\",",
 							"    value: userAgent",
-							"})"
+							"})",
+							"",
+							"const ip = pm.variables.replaceIn(\"{{$randomIP}}\")",
+							"pm.request.headers.add({",
+							"    key: \"X-Forwarded-For\",",
+							"    value: ip",
+							"})",
+							""
 						],
 						"type": "text/javascript"
 					}
