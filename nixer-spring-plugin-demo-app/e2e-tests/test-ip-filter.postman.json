@@ -60,7 +60,7 @@
 							"const cookieJar = pm.cookies.jar();",
 							"var url = pm.environment.get(\"url.hostname\")",
 							"cookieJar.clear(url, function(error) {",
-							"  console.log(\"Unable to clean cookies\", error)",
+							"  error && console.log(\"Unable to clean cookies\", error)",
 							"});",
 							"pm.environment.unset(\"crsftoken\");",
 							""
