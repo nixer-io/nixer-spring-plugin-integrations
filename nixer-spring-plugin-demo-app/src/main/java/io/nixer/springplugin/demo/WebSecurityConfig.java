@@ -97,7 +97,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return builder -> builder
                 .rule("blacklistedIp")  // we want to hide fact that request was blocked. So pretending regular login error.
                 .when(Conditions::isBlacklistedIp)
-                .then(BLOCKED_ERROR)
+                .then(CAPTCHA)
                 .buildRule()
                 .rule("ipLoginOverThreshold")
                 .when(Conditions::isIpLoginOverThreshold)
@@ -105,6 +105,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .buildRule()
                 .rule("userAgentLoginOverThreshold")
                 .when(Conditions::isUserAgentLoginOverThreshold)
+                .then(CAPTCHA)
+                .buildRule()
+                .rule("usernameLoginOverThreshold")
+                .when(Conditions::isUsernameLoginOverThreshold)
                 .then(CAPTCHA)
                 .buildRule()
                 .rule("credentialStuffingActive")
