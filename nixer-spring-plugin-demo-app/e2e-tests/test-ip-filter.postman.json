@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "7c21c570-a19e-444a-8e6d-7d7f30283641",
-		"name": "Nixer Plugin Demo CS IP",
+		"_postman_id": "e7d08710-aa5b-4c9b-a0b8-7d6843628dc8",
+		"name": "Nixer Plugin Demo CS IP Filtering",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -80,6 +80,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "X-Forwarded-For",
+						"value": "{{data.ip}}",
+						"type": "text"
 					}
 				],
 				"url": {
@@ -135,9 +140,7 @@
 					"script": {
 						"id": "39818146-5f73-43cf-892c-dea7465f62d2",
 						"exec": [
-							"// var userAgent = pm.variables.get(\"$randomUserAgent\")",
 							"var userAgent = pm.variables.replaceIn(\"{{$randomUserAgent}}\")",
-							"// console.log(\"UserAgent: \" + userAgent)",
 							"",
 							"pm.request.headers.add({",
 							"    key: \"User-Agent\",",
@@ -159,6 +162,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "X-Forwarded-For",
+						"value": "{{data.ip}}",
+						"type": "text"
 					}
 				],
 				"body": {

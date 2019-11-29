@@ -68,7 +68,6 @@
 									"console.log(\"Url for cookies\", url)",
 									"cookieJar.clear(url, function(error) {",
 									"    console.log(\"Unable to clean cookies\", error)",
-									"  ",
 									"});",
 									"",
 									"pm.environment.unset(\"crsftoken\");"
