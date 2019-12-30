@@ -1,0 +1,15 @@
+{
+  "name": "e2e-tests",
+  "version": "1.0.0",
+  "description": "This module contains e2e tests based on postman simulating variety of cases for user login.",
+  "dependencies": {
+    "newman": "git+https://github.com/nixer-io/newman.git#feature/cookies-domain-whitelist",
+    "newman-reporter-htmlextra": "^1.9.2",
+    "yargs": "^15.0.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "license": "Apache-2.0"
+}
