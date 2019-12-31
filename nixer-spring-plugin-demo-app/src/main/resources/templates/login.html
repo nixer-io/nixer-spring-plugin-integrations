@@ -2,10 +2,6 @@
 <head>
     <title>Please Login</title>
 
-    <script th:if="${@captchaChecker.shouldDisplayCaptcha()}" src='https://www.google.com/recaptcha/api.js' async defer>
-
-    </script>
-
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
@@ -26,13 +22,8 @@
         </div>
         <label for="inputUsername" class="sr-only">Username</label>
         <input name="username" type="text" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
-
         <label for="inputPassword" class="sr-only">Password</label>
         <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-
-        <div th:if="${@captchaChecker.shouldDisplayCaptcha()}" class="g-recaptcha"
-             th:attr="data-sitekey=${@captchaKeyProvider.getSiteKey()}"></div>
-
         <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
         <p class="mt-5 mb-3 text-muted">&copy; 2019</p>
     </form>
