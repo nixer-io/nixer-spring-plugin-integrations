@@ -1,0 +1,30 @@
+name: Synchronize plugin apply example
+
+on:
+  pull_request:
+    branches:
+    - master
+    types:
+    - closed
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Check repository
+      run: |
+        if [ "${{ github.event.pull_request.base.repo.html_url }}" != "${{ github.event.pull_request.head.repo.html_url }}" ]; then
+          echo "ERROR: Cross-repository pull requests, e.g. from forks, are not supported."
+          exit 1
+        fi
+    - name: Create sync pull request
+      uses: repo-sync/pull-request@v2.0.1
+      with:
+        source_branch: "${{ github.event.pull_request.head.ref }}"
+        destination_branch: "master-with-nixer-plugin"
+        pr_title: "AUTO-SYNC: #${{ github.event.pull_request.number }} ${{ github.event.pull_request.title }}"
+        pr_body: ":leftwards_arrow_with_hook: **An automated sync PR**. Synchronizing `master-with-nixer-plugin` branch with changes on `master` introduced by PR ${{ github.event.pull_request.html_url }}."
+        pr_reviewer: "${{ github.event.pull_request.merged_by.login }}"
+        pr_assignee: "${{ github.event.pull_request.merged_by.login }}"
+        github_token: ${{ secrets.GITHUB_TOKEN }}
