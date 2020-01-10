@@ -11,7 +11,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - name: Checkout project
+      uses: actions/checkout@v1
     - name: Check repository
       run: |
         if [ "${{ github.event.pull_request.base.repo.html_url }}" != "${{ github.event.pull_request.head.repo.html_url }}" ]; then
