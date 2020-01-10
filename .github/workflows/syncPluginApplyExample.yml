@@ -25,7 +25,7 @@ jobs:
         source_branch: "${{ github.event.pull_request.head.ref }}"
         destination_branch: "master-with-nixer-plugin"
         pr_title: "AUTO-SYNC: #${{ github.event.pull_request.number }} ${{ github.event.pull_request.title }}"
-        pr_body: ":leftwards_arrow_with_hook: **An automated sync PR**. Synchronizing `master-with-nixer-plugin` branch with changes on `master` introduced by PR ${{ github.event.pull_request.html_url }}."
+        pr_body: ":leftwards_arrow_with_hook: **An automated sync PR**. Synchronizing *master-with-nixer-plugin* branch with changes on *master* introduced by PR ${{ github.event.pull_request.html_url }}."
         pr_reviewer: "${{ github.event.pull_request.merged_by.login }}"
         pr_assignee: "${{ github.event.pull_request.merged_by.login }}"
         github_token: ${{ secrets.GITHUB_TOKEN }}
