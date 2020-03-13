@@ -53,6 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private Map<String, String> users() {
         final Map<String, String> users = new HashMap<>();
+        users.put("demo", "demo");
         users.put("existingUser1", "gup5A686zjnVhw+v");
         users.put("existingUser2", "PgwWldkDIP15gZ8u");
         users.put("existingUser3", "HaMaUiG0UyCi1Yot");
