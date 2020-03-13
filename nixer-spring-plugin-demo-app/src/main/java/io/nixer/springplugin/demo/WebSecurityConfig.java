@@ -3,6 +3,11 @@ package io.nixer.springplugin.demo;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.nixer.nixerplugin.captcha.config.CaptchaConfigurer;
+import io.nixer.nixerplugin.captcha.security.CaptchaChecker;
+import io.nixer.nixerplugin.core.detection.filter.FilterConfiguration;
+import io.nixer.nixerplugin.core.detection.filter.behavior.Conditions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.filter.OrderedRequestContextFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,12 +20,20 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.filter.RequestContextFilter;
 
+import static io.nixer.nixerplugin.core.detection.filter.behavior.Behaviors.CAPTCHA;
+
 /**
  * Very basic in-memory single user IAM.
  */
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private CaptchaChecker captchaChecker;
+
+//    @Autowired
+//    private CaptchaAuthenticationProvider captchaAuthenticationProvider;
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -44,6 +57,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         final InMemoryUserDetailsManagerConfigurer<AuthenticationManagerBuilder> configurer = auth.inMemoryAuthentication().passwordEncoder(encoder);
 
         users().forEach((user, pass) -> configurer.withUser(user).password(encoder.encode(pass)).roles("USER"));
+
+        //JDBC Authentication with post-processor mechanism.
+        //Credentials take precedence before captcha.
+        //Invalid captcha will not be reported when captcha is empty and credentials are correct (though the authentication will fail as expected).
+        configurer.withObjectPostProcessor(new CaptchaConfigurer(captchaChecker));
+
+        // Authentication with additional authentication provider.
+        // Captcha checked before credentials - captcha information will be propagated in Nixer plugin.
+        // Captcha will be checked always when displayed, and will take precedence before credentials check.
+        //
+        // configurer.and().authenticationProvider(captchaAuthenticationProvider);
     }
 
     @Bean
@@ -51,6 +75,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new OrderedRequestContextFilter();
     }
 
+    /**
+     * Configures rules. Rules define what happens at what conditions.
+     */
+    @Bean
+    public FilterConfiguration.BehaviorProviderConfigurer behaviorConfigurer() {
+        return builder -> builder
+                    .rule("usernameLoginOverThreshold")
+                    .when(Conditions::isUsernameLoginOverThreshold)
+                    .then(CAPTCHA)
+                .buildRule()
+                    .rule("userAgentLoginOverThreshold")
+                    .when(Conditions::isUserAgentLoginOverThreshold)
+                    .then(CAPTCHA)
+                .buildRule()
+                    .rule("failedLoginRatioActive")
+                    .when(Conditions::isFailedLoginRatioActive)
+                    .then(CAPTCHA)
+                .buildRule();
+    }
 
     private Map<String, String> users() {
         final Map<String, String> users = new HashMap<>();
