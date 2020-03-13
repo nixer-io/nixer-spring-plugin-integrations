@@ -32,9 +32,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CaptchaChecker captchaChecker;
 
-//    @Autowired
-//    private CaptchaAuthenticationProvider captchaAuthenticationProvider;
-
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
@@ -58,16 +55,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         users().forEach((user, pass) -> configurer.withUser(user).password(encoder.encode(pass)).roles("USER"));
 
-        //JDBC Authentication with post-processor mechanism.
-        //Credentials take precedence before captcha.
-        //Invalid captcha will not be reported when captcha is empty and credentials are correct (though the authentication will fail as expected).
+        // Captcha added with post-processor mechanism.
+        // Alternatively, captcha can be added with authentication provider (more in docs https://nixer-io.github.io/).
         configurer.withObjectPostProcessor(new CaptchaConfigurer(captchaChecker));
-
-        // Authentication with additional authentication provider.
-        // Captcha checked before credentials - captcha information will be propagated in Nixer plugin.
-        // Captcha will be checked always when displayed, and will take precedence before credentials check.
-        //
-        // configurer.and().authenticationProvider(captchaAuthenticationProvider);
     }
 
     @Bean
