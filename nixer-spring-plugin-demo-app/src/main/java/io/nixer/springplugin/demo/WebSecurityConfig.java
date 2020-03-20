@@ -6,6 +6,7 @@ import java.util.Map;
 import io.nixer.nixerplugin.captcha.config.CaptchaConfigurer;
 import io.nixer.nixerplugin.captcha.security.CaptchaChecker;
 import io.nixer.nixerplugin.core.detection.filter.FilterConfiguration;
+import io.nixer.nixerplugin.core.detection.filter.behavior.Behaviors;
 import io.nixer.nixerplugin.core.detection.filter.behavior.Conditions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.filter.OrderedRequestContextFilter;
@@ -19,8 +20,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.filter.RequestContextFilter;
-
-import static io.nixer.nixerplugin.core.detection.filter.behavior.Behaviors.CAPTCHA;
 
 /**
  * Very basic in-memory single user IAM.
@@ -73,15 +72,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return builder -> builder
                     .rule("usernameLoginOverThreshold")
                     .when(Conditions::isUsernameLoginOverThreshold)
-                    .then(CAPTCHA)
-                .buildRule()
-                    .rule("userAgentLoginOverThreshold")
-                    .when(Conditions::isUserAgentLoginOverThreshold)
-                    .then(CAPTCHA)
+                    .then(Behaviors.CAPTCHA)
                 .buildRule()
                     .rule("failedLoginRatioActive")
                     .when(Conditions::isFailedLoginRatioActive)
-                    .then(CAPTCHA)
+                    .then(Behaviors.CAPTCHA)
                 .buildRule();
     }
 
